@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Reddit::VERSION
   gem.authors       = ["Seth Dowden"]
   gem.email         = ["sethclarkdowden@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{reddit scraper}
+  gem.summary       = %q{reddit scraper}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
