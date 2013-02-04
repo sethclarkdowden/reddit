@@ -7,9 +7,13 @@ class Scrape
 		puts "hi"
 		subreddit("http://www.reddit.com")
 	end
+	
+	def hashes
+
+	end
 
 	def subreddit(url)
-		puts url
+		@posts = []
 		page = Nokogiri::HTML(open(url))
 		results = page.css(".linklisting .link")
 		results.each do |r|
@@ -20,7 +24,6 @@ class Scrape
 			comments = r.css(".comments").text.to_i
 
 			post = {url: url, title: title, score: score, comments: comments}
-			@posts = [] 
 			@posts << post
 			puts @posts.inspect
 
