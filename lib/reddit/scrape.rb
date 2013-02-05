@@ -1,31 +1,51 @@
 require 'nokogiri' 
 require 'open-uri'
 
-class Scrape
+class Subreddit
 
-	def initialize
-		puts "hi"
-		subreddit("http://www.reddit.com")
-	end
-	
-	def hashes
-
+	def initialize()
+		@posts =[]
 	end
 
-	def subreddit(url)
-		@posts = []
-		page = Nokogiri::HTML(open(url))
-		results = page.css(".linklisting .link")
+	def scraper(subb, pages)
+		@url = "http://www.reddit.com/r/" + subb
+		count = 1
+		pages = pages.to_i
+
+		while count <= pages
+			scrape
+			getnexturl
+			count += 1
+			sleep(5 + rand(15))
+		end
+
+		print @posts.inspect
+		
+	end
+
+	def getnexturl()
+		urlchek = @page.css(".nextprev a")
+		urlchek = urlchek.map {|urlchek| urlchek.attribute('href')}
+		if urlchek[1] == nil
+			@url = urlchek[0]
+		else
+			@url = urlchek[1]
+		end
+	end
+
+
+	def scrape()
+		@page = Nokogiri::HTML(open(@url))
+		results = @page.css(".linklisting .link")
 		results.each do |r|
-			url = r.css(".title a")[0]['href']
+			urls = r.css(".title a")[0]['href']
 			title =  r.css(".title .title").text
 			score = r.css(".score")
 			score = score.css(".unvoted").text.to_i
 			comments = r.css(".comments").text.to_i
 
-			post = {url: url, title: title, score: score, comments: comments}
+			post = {url: urls, title: title, score: score, comments: comments}
 			@posts << post
-			puts @posts.inspect
 
 			puts "title:"
 			puts title
@@ -34,12 +54,17 @@ class Scrape
 			puts "comments:"
 			puts comments
 			puts "url:"
-			puts url
+			puts urls
 			puts "********************"
 		end
-		puts @posts.inspect
 	end
 end
-scrape = Scrape.new
-scrape
+
+puts "subreddit:"
+subb = gets.chomp
+puts "pages:"
+pages = gets.chomp
+
+s = Subreddit.new
+s.scraper(subb, pages)
 
