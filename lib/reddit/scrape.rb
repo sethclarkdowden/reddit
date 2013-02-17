@@ -17,10 +17,9 @@ class Subreddit
 			getnexturl
 			count += 1
 			sleep(5 + rand(15))
-		end
 
-		print @posts.inspect
-		
+		end
+		return @posts
 	end
 
 	def getnexturl()
@@ -66,5 +65,9 @@ puts "pages:"
 pages = gets.chomp
 
 s = Subreddit.new
-s.scraper(subb, pages)
+posts = s.scraper(subb, pages)
+		posts.each do |p|
+			puts p.inspect
+			puts "*****************************"
+		end
 
