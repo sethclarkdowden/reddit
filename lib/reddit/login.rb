@@ -17,32 +17,19 @@ class Login
 
  	def post
  		page = @agent.get("http://www.reddit.com/r/funny/comments/18o2rm/whenever_the_waiter_comes_back_to_see_how_the/")
- 		form = page.forms
- 		# i = 0 
- 		# form.each do |f|
- 		# 	puts "*************************************"
- 		# 	puts i
- 		# 	i += 1 
- 		# 	puts f.inspect 
- 		# end
- 		from = page.froms[15]
+ 		form = page.forms[15]
  		puts form.inspect
- 		from.text = "hello world"
- 		@agent.submit(form)
- 		
+ 		button = form.button_with(:type => "submit")
+ 		form['text'] = "hello world"
+ 		form.click_button(button) 		
  	end
  	
 	def login
 		page = @agent.get("http://www.reddit.com/r/funny/comments/18o2rm/whenever_the_waiter_comes_back_to_see_how_the/")
-		#puts page.inspect
 		form = page.forms[1]
-		puts page.forms[1].inspect
 		form.user = "STRMX"
 		form.passwd = "cascada15"
 		@agent.submit(form)
-		#puts page.inspect
-
-
 	end
 
 end
